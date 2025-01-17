@@ -14,13 +14,15 @@ const app = express();
 //       res.send('hello i am from port 7777')
 // })
 
-app.use("/user", (req, res) => {
-  res.send("hahahahaha")
-})
+// app.use("/user/:userId", (req, res) => {
 
-app.get('/user', (req, res) => {
-  res.send("user get api successful" )
-})
+//   res.send("hahahahaha")
+// })
+
+app.get("/user/:userId", (req, res) => {
+    console.log("userId is", req.params);
+  res.send("user get api successful");
+});
 
 app.post("/user", (req, res) => {
   // write logic to save data to database
