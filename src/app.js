@@ -5,7 +5,7 @@ const User = require("./models/User")
 app.use(express.json());
 
 app.post("/signup", async(req, res) => {
-    console.log(req.body)
+   
   const user = new User(req.body);
   try {
     // error handling

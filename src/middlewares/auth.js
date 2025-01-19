@@ -1,5 +1,5 @@
 const adminAuth = (req,res,next) => {
-  console.log("auth is verified")
+ 
   const token = "xyz"
   const isAdmin = token === "xyzg";
   if (!isAdmin) {
