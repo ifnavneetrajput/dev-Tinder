@@ -13,7 +13,7 @@ app.post("/signup", async(req, res) => {
   res.send("user saved succesfully ")
   }
   catch (err) {
-    res.status(401).send("something went wrong")
+    res.status(401).send("something went wrong"+err.message)
   }
 })
 // get user by email
@@ -64,7 +64,12 @@ app.delete("/user", async(req, res) => {
 app.patch("/user", async (req, res) => {
   const data = req.body
   try {
-    const user = await User.findByIdAndUpdate(data.userId, data, { returnDocument: "before" })
+    const user = await User.findByIdAndUpdate(
+      data.userId,
+      data,
+      { returnDocument: "before" },
+      { runValidators: true }
+    );
     console.log(user)
     res.send("data updated successfully")
   }
