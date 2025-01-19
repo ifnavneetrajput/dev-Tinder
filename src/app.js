@@ -16,7 +16,36 @@ app.post("/signup", async(req, res) => {
     res.status(401).send("something went wrong")
   }
 })
+// get user by email
+app.get("/user", async (req, res) => {
+      const userEmail = req.body.email; 
+  try {
 
+    const users = await User.find({ email: userEmail })
+    if (users.length===0) {
+     res.status(401).send("user not found");
+    }
+    else {
+        res.send(users);
+    }
+ 
+  }
+  catch (err) {
+    res.status(401).send("something went wrong")
+  }
+})
+
+//get all user for feed
+
+app.get("/feed", async (req, res) => {
+
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+     res.status(401).send("something went wrong");
+  }
+})
 
 
 connectDB()
