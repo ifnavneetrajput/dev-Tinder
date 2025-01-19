@@ -47,6 +47,18 @@ app.get("/feed", async (req, res) => {
   }
 })
 
+// delete an document by id
+
+app.delete("/user", async(req, res) => {
+  const userId = req.body.userId
+  try {
+    const user = await User.findByIdAndDelete(userId)
+    res.send("user deleted successfully")
+  } catch (err) {
+    res.status(401).send("something went wrong");
+  }
+})
+
 
 connectDB()
   .then(() => {
