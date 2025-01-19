@@ -26,6 +26,27 @@ app.post("/signup", async (req, res) => {
       res.status(401).send("something went wrong : " + err.message);
     }
 })
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email })
+    if (!user) {
+      throw new Error("Invalid credentials")
+    }
+
+    const passwordHash = user.password
+    const isPasswordValid = await bcrypt.compare(password, passwordHash)
+    if (!isPasswordValid) {
+      throw new Error("Invalid credentials")
+    }
+    res.send("login successful !!!")
+  } catch (err) {
+    res.status(401).send("something went wrong : " + err.message);
+  }
+  
+})
+
 // get user by email
 app.get("/user", async (req, res) => {
       const userEmail = req.body.email; 
