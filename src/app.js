@@ -4,10 +4,11 @@ const app = express();
 const User = require("./models/User");
 const { validationSignupData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
-const cookieParser = require("cookie-parser")
-const jwt = require("jsonwebtoken");
-const {userAuth } =require("./middlewares/auth")
-app.use(cookieParser())
+const cookieParser = require("cookie-parser");
+
+const { userAuth } = require("./middlewares/auth");
+
+app.use(cookieParser());
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
@@ -39,16 +40,11 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid credentials");
     }
 
-    const passwordHash = user.password;
-    const isPasswordValid = await bcrypt.compare(password, passwordHash);
+   
+    const isPasswordValid = await user.validatePassword(password);
     if (isPasswordValid) {
-      // create a jwt token
+      const token = await user.getJWT();
 
-
-      const token = await jwt.sign({ _id: user._id }, "DEV@TINDER$47", {
-        expiresIn: 60 * 60,
-      });
-      // add the token to cookie and send the response back to the user
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
       });
@@ -60,20 +56,19 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile",userAuth, async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-      const user = req.user
-    res.send(user)
-  
+    const user = req.user;
+    res.send(user);
   } catch (err) {
     res.status(401).send("something went wrong : " + err.message);
   }
 });
 
 app.post("/sendconnectionrequest", userAuth, async (req, res) => {
-  const user = req.user
-  res.send(user.firstName +"  sending the connection request")
-})
+  const user = req.user;
+  res.send(user.firstName + "  sending the connection request");
+});
 
 // get user by email
 app.get("/user", async (req, res) => {
