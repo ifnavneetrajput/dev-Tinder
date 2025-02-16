@@ -5,7 +5,15 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequestSchema");
 const userRouter = express.Router();
 const User = require("../models/User");
-const USER_SAFE_DATA = ["firstName", "lastName", "about", "skills", "photoUrl"];
+const USER_SAFE_DATA = [
+  "firstName",
+  "lastName",
+  "about",
+  "skills",
+  "photoUrl",
+  "age",
+  "gender",
+];
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -13,7 +21,13 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     const connectionRequest = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName"]);
+    }).populate("fromUserId", [
+      "firstName",
+      "lastName",
+      "age",
+      "gender",
+      "photoUrl",
+    ]);
 
     res.json({
       message: "Data fetched sussefully ",
@@ -36,12 +50,14 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     })
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
-
-    const data = connectionRequest.map((row) => {
-      if (row.fromUserId.toString() === row.toUserId.toString()) {
-        return row.toUserId;
-      }
-      row.fromUserId;
+    
+    const validConnections = connectionRequest.filter(
+      (row) => row.fromUserId && row.toUserId
+    );
+    const data = validConnections.map((row) => {
+      return row.fromUserId._id.toString() === loggedInUser._id.toString()
+        ? row.toUserId // If the logged-in user is `fromUserId`, return `toUserId`
+        : row.fromUserId; // Else return `fromUserId`
     });
 
     res.json({ data });
