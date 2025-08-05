@@ -3,10 +3,12 @@ const connectDB = require("./config/database");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require('cors')
+const http = require('http');
+const initaliseSocket = require("./utils/socket");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5174",
     credentials:true
   })
 );
@@ -19,14 +21,20 @@ const profileRouter= require("./routes/profile")
 const requestRouter= require("./routes/request");
 const { userRouter } = require("./routes/user");
 
+
 app.use("/", authRouter)
 app.use("/", profileRouter)
 app.use("/", requestRouter)
-app.use("/",userRouter)
+app.use("/", userRouter)
+
+const server = http.createServer(app);
+initaliseSocket(server);
+
+
 connectDB()
   .then(() => {
     console.log("database connection is eastablished");
-    app.listen(7777, () => {
+    server.listen(7777, () => {
       console.log("This port is running on 7777");
     });
   })
