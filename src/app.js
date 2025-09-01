@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors')
 const http = require('http');
 const initaliseSocket = require("./utils/socket");
-
+require('dotenv').config()
 app.use(
   cors({
     origin: "http://localhost:5176", // allow all
@@ -34,7 +34,7 @@ initaliseSocket(server);
 connectDB()
   .then(() => {
     console.log("database connection is eastablished");
-    server.listen(7777, () => {
+    server.listen(process.env.PORT, () => {
       console.log("This port is running on 7777");
     });
   })
