@@ -4,8 +4,8 @@ const initaliseSocket = (server) => {
   
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:5173",
-    credentials: true,
+    origin: "*", // allow all
+    credentials: false, // must be false if you use "*"
   },
 });
   
