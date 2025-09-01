@@ -6,12 +6,7 @@ const cors = require('cors')
 const http = require('http');
 const initaliseSocket = require("./utils/socket");
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials:true
-  })
-);
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
