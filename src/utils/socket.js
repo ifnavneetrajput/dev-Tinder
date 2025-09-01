@@ -6,9 +6,10 @@ const io = socket(server, {
   cors: {
     origin: [
       "http://localhost:5176",
-      "https://dev-tinder-inztuw1yi-ifnavneetrajputs-projects.vercel.app", 
-    ], 
-    credentials: true, 
+      "https://dev-tinder-web-tau-bice.vercel.app",
+      "https://dev-tinder-inztuw1yi-ifnavneetrajputs-projects.vercel.app",
+    ],
+    credentials: true,
   },
 });
   
