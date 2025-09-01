@@ -8,8 +8,11 @@ const initaliseSocket = require("./utils/socket");
 require('dotenv').config()
 app.use(
   cors({
-    origin: "http://localhost:5176", // allow all
-    credentials: true, // must be false if you use "*"
+    origin: [
+      "http://localhost:5176", 
+      "https://dev-tinder-inztuw1yi-ifnavneetrajputs-projects.vercel.app",
+    ], 
+    credentials: true, 
   })
 );
 app.use(cookieParser());
