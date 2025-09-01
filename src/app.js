@@ -8,8 +8,8 @@ const initaliseSocket = require("./utils/socket");
 
 app.use(
   cors({
-    origin: "*", // allow all
-    credentials: false, // must be false if you use "*"
+    origin: "http://localhost:5176", // allow all
+    credentials: true, // must be false if you use "*"
   })
 );
 app.use(cookieParser());
